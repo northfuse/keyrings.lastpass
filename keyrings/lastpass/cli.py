@@ -1,5 +1,6 @@
 import shutil
 import subprocess
+from subprocess import PIPE
 
 
 class AccountNotFound(Exception):
@@ -22,7 +23,7 @@ def lpass(*args, input=None):
     cli_args = ["lpass"] + list(args)
     try:
         result = subprocess.run(
-            cli_args, check=True, capture_output=True, input=input
+            cli_args, check=True, stderr=PIPE, stdout=PIPE, input=input
         )  # noqa
         return result.stdout.decode("utf-8")
     except subprocess.CalledProcessError as exc:
