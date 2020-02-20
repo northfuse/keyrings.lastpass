@@ -1,7 +1,7 @@
 from keyring.backend import KeyringBackend
 from keyring.util import properties
-from keyrings.lpass.lpass import load_notes, save_notes
-from keyrings.lpass.cli import lastpass_installed
+from keyrings.lastpass.lpass import load_notes, save_notes
+from keyrings.lastpass.cli import lastpass_installed
 
 # from keyring import errors
 

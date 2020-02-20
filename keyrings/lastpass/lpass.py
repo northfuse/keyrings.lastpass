@@ -1,4 +1,4 @@
-from keyrings.lpass.cli import lpass, AccountNotFound
+from keyrings.lastpass.cli import lpass, AccountNotFound
 import json
 
 
