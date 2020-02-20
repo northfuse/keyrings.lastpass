@@ -1,7 +1,8 @@
 from keyring.backend import KeyringBackend
 from keyring import errors
 from keyring.util import properties
-from keyrings.lpass.lpass import lastpass_installed, lpass
+from keyrings.lpass.lpass import load_notes, save_notes
+from keyrings.lpass.cli import lastpass_installed
 
 PRIORITY = 10
 
@@ -17,21 +18,22 @@ class LastPassKeyring(KeyringBackend):
         return PRIORITY
 
     def get_password(self, service, username):
-        print("get: " + service + " " + username)
-        return lpass(["foo"])
+        #print("get: " + service + " " + username)
+        notes = load_notes(service)
+        if username in notes:
+            return notes[username]
+        else:
+            return None
 
     def set_password(self, service, username, password):
-        print("set: " + service + " " + username + " " + password)
-        """Set password for the username of the service.
-        If the backend cannot store passwords, raise
-        NotImplementedError.
-        """
-        raise errors.PasswordSetError("reason")
+        #print("set: " + service + " " + username + " " + password)
+        notes = load_notes(service)
+        notes[username] = password
+        save_notes(service, notes)
+        #raise errors.PasswordSetError("reason")
 
     def delete_password(self, service, username):
-        print("delete: " + service + " " + username)
-        """Delete the password for the username of the service.
-        If the backend cannot store passwords, raise
-        NotImplementedError.
-        """
-        raise errors.PasswordDeleteError("reason")
+        #print("delete: " + service + " " + username)
+        notes = load_notes(service)
+        del notes[username]
+        save_notes(service, notes)
